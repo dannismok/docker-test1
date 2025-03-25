@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080" # Map port 8080 of the container to port 8080 of the host
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/docker-test1 # Use the MongoDB service from the Compose network
+
+  mongo:
+    image: mongo:5.0
+    container_name: mongodb
+    ports:
+      - "27017:27017" # Expose MongoDB's default port
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
